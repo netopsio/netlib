@@ -26,14 +26,14 @@ class SSH(object):
         return self.client.close() 
 
     def command(self, command):
-        client_shell = self.client.invoke_shell()
-        output = client_shell.recv(self.buffer)
-        client_shell.send(command + "\n")
+        self.client_shell = self.client.invoke_shell()
+        output = self.client_shell.recv(self.buffer)
+        self.client_shell.send(command + "\n")
         not_done = True
         while not_done:
             time.sleep(float(self.delay))
-            if client_shell.recv_ready():
-                output += client_shell.recv(self.buffer)
+            if self.client_shell.recv_ready():
+                output += self.client_shell.recv(self.buffer)
             else:
                 not_done = False
 
