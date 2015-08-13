@@ -9,6 +9,12 @@ Currently, the SSH and Telnet modules have been created. Both modules have a
 very similar API structure, with the biggest difference between the two are how
 connections are established to network devices.
 
+To install:
+
+    git clone https://github.com/jtdub/netlib.git
+    cd netlib
+    python setup.py install
+
 To use the either module, you need to import the library into your script:
 
     from netlib.connection import SSH
