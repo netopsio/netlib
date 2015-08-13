@@ -4,10 +4,11 @@ import time
 
 class SSH(object):
 
-    def __init__(self, device_name, username, password, buffer="65535", delay="1"):
+    def __init__(self, device_name, username, password, buffer="65535",
+                 delay="1"):
         self.device_name = device_name
         self.username = username
-        self.password = password 
+        self.password = password
         self.buffer = buffer
         self.delay = delay
 
@@ -22,7 +23,7 @@ class SSH(object):
         return self.client_conn.recv(self.buffer)
 
     def close(self):
-        return self.pre_conn.close() 
+        return self.pre_conn.close()
 
     def clear_buffer(self):
         if self.client_conn.recv_ready():
