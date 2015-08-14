@@ -127,11 +127,11 @@ class SNMP(object):
 
     def snmp_get(self):
         from pysnmp.entity.rfc3413.oneliner import cmdgen
- 
+
         cmdGen = cmdgen.CommandGenerator()
         errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
             cmdgen.CommunityData(self.snmp_community),
-            cmdgen.UdpTransportTarget((self.device_name, self.snmp_port)), 
+            cmdgen.UdpTransportTarget((self.device_name, self.snmp_port)),
             cmdgen.MibVariable(self.mib_version, self.mib_name, self.mib_id),
             lookupNames=True, lookupValues=True)
 
@@ -142,5 +142,3 @@ class SNMP(object):
         else:
             for name, val in varBinds:
                 return val.prettyPrint()
-                #print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
-                #return val.prettyPrint()
