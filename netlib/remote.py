@@ -11,6 +11,7 @@ class SSH(object):
     def connect(self):
         import paramiko
         import time
+
         self.pre_conn = paramiko.SSHClient()
         self.pre_conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.pre_conn.connect(self.device_name, username=self.username,
@@ -31,6 +32,7 @@ class SSH(object):
 
     def set_enable(self, enable_password):
         import re
+
         if re.search('>$', self.command('\n')):
             enable = self.command('enable')
             if re.search('Password', enable):
@@ -47,6 +49,7 @@ class SSH(object):
 
     def command(self, command):
         import time
+
         self.client_conn.sendall(command + "\n")
         not_done = True
         output = ""
@@ -71,6 +74,7 @@ class Telnet(object):
     def connect(self):
         import telnetlib
         import sys
+
         self.access = telnetlib.Telnet(self.device_name)
         login_prompt = self.access.read_until("\(Username: \)|\(login: \)",
                                               self.delay)
@@ -90,6 +94,7 @@ class Telnet(object):
 
     def set_enable(self, enable_password):
         import re
+
         if re.search('>$', self.command('\n')):
             self.access.write('enable\n')
             enable = self.access.read_until('Password')
@@ -106,3 +111,36 @@ class Telnet(object):
     def command(self, command):
         self.access.write(command + '\n')
         return self.access.read_until("\(#\)|\(>\)", self.delay)
+
+
+class SNMP(object):
+
+    def __init__(self, device_name, snmp_community, mib_name, mib_id="0",
+                 snmp_version="2c", snmp_port="161", mib_version="SNMPv2-MIB"):
+        self.device_name = device_name
+        self.snmp_community = snmp_community
+        self.mib_name = mib_name
+        self.mib_id = mib_id
+        self.snmp_version = snmp_version
+        self.snmp_port = snmp_port
+        self.mib_version = mib_version
+
+    def snmp_get(self):
+        from pysnmp.entity.rfc3413.oneliner import cmdgen
+ 
+        cmdGen = cmdgen.CommandGenerator()
+        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
+            cmdgen.CommunityData(self.snmp_community),
+            cmdgen.UdpTransportTarget((self.device_name, self.snmp_port)), 
+            cmdgen.MibVariable(self.mib_version, self.mib_name, self.mib_id),
+            lookupNames=True, lookupValues=True)
+
+        if errorIndication:
+            print(errorIndication)
+        elif errorStatus:
+            print(errorStatus)
+        else:
+            for name, val in varBinds:
+                return val.prettyPrint()
+                #print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
+                #return val.prettyPrint()

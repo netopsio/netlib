@@ -1,0 +1,5 @@
+ecdsa==0.13
+paramiko==1.15.2
+pyasn1==0.1.8
+pycrypto==2.6.1
+pysnmp==4.2.5
