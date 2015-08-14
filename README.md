@@ -77,7 +77,8 @@ python script.
 
 From there, enter your polling parameters.
 
-    r = SNMP('somerouter', 'superl33tr34d0ly_community', 'someMIBname')
+    r = SNMP('somerouter', 'superl33tr34d0ly_community', mib_name='SNMPv2-MIB',
+             symbol_name='sysDescr', mib_index='0')
 
 Then you poll the device.
 
