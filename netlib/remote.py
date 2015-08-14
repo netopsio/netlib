@@ -113,10 +113,11 @@ class Telnet(object):
         return self.access.read_until("\(#\)|\(>\)", self.delay)
 
 
-class SNMP(object):
+class SNMPv2(object):
 
-    def __init__(self, device_name, snmp_community, symbol_name, mib_index="0",
-                 mib_name="SNMPv2-MIB", snmp_version="2c", snmp_port="161"):
+    def __init__(self, device_name, snmp_community, symbol_name="sysDescr",
+                 mib_index="0", mib_name="SNMPv2-MIB", snmp_version="2c",
+                 snmp_port="161"):
         self.device_name = device_name
         self.snmp_community = snmp_community
         self.symbol_name = symbol_name
@@ -125,21 +126,29 @@ class SNMP(object):
         self.snmp_version = snmp_version
         self.snmp_port = snmp_port
 
-    def snmp_get(self):
+    def get(self):
         from pysnmp.entity.rfc3413.oneliner import cmdgen
 
         cmdGen = cmdgen.CommandGenerator()
-        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
-            cmdgen.CommunityData(self.snmp_community),
-            cmdgen.UdpTransportTarget((self.device_name, self.snmp_port)),
-            cmdgen.MibVariable(self.mib_name, self.symbol_name,
-                               self.mib_index),
-            lookupNames=True, lookupValues=True)
+        error_indication, error_status, error_index, data = cmdGen.getCmd(
+                                cmdgen.CommunityData(self.snmp_community),
+                                cmdgen.UdpTransportTarget((self.device_name,
+                                                           self.snmp_port)),
+                                cmdgen.MibVariable(self.mib_name,
+                                                   self.symbol_name,
+                                                   self.mib_index),
+                                lookupNames=True, lookupValues=True)
 
-        if errorIndication:
-            return errorIndication
-        elif errorStatus:
-            return errorStatus
+        if error_indication:
+            self.error_indication = error_indication
+            return self.error_indication
+        elif error_status:
+            self.error_status = error_status
+            return self.error_status
         else:
-            for name, val in varBinds:
-                return val.prettyPrint()
+            self.data = data
+            return self.data
+
+    def extract(self):
+            for name, value in self.data:
+                return value.prettyPrint()

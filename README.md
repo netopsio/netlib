@@ -68,21 +68,26 @@ unexpected results.
 ## SNMP
 
 SNMP functionality is still very experimental. It currently only supports SNMP
-version <= 2. Version 3 support will hopefully come soon.
+version 2. Version 3 support will hopefully come soon.
 
 To use the SNMP functionality, you will need to import the module into your
 python script.
 
-    from netlib.remote import SNMP
+    from netlib.remote import SNMPv2
 
 From there, enter your polling parameters.
 
-    r = SNMP('somerouter', 'superl33tr34d0ly_community', mib_name='SNMPv2-MIB',
+    r = SNMPv2('somerouter', 'superl33tr34d0ly_community', mib_name='SNMPv2-MIB',
              symbol_name='sysDescr', mib_index='0')
 
 Then you poll the device.
 
-    r.snmp_get()
+    r.get()
+
+Doing this returns the raw data. To display the information pulled in a human
+readable format, you will need to call the extract method.
+
+    r.extract()
 
 Again, the functionality of the SNMP module is still very limited. I hope to
 work on it soon and create a more robust functionality for SNMP.
