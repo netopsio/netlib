@@ -115,15 +115,15 @@ class Telnet(object):
 
 class SNMP(object):
 
-    def __init__(self, device_name, snmp_community, mib_name, mib_id="0",
-                 snmp_version="2c", snmp_port="161", mib_version="SNMPv2-MIB"):
+    def __init__(self, device_name, snmp_community, symbol_name, mib_index="0",
+                 mib_name="SNMPv2-MIB", snmp_version="2c", snmp_port="161"):
         self.device_name = device_name
         self.snmp_community = snmp_community
+        self.symbol_name = symbol_name
+        self.mib_index= mib_index
         self.mib_name = mib_name
-        self.mib_id = mib_id
         self.snmp_version = snmp_version
         self.snmp_port = snmp_port
-        self.mib_version = mib_version
 
     def snmp_get(self):
         from pysnmp.entity.rfc3413.oneliner import cmdgen
@@ -132,7 +132,8 @@ class SNMP(object):
         errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
             cmdgen.CommunityData(self.snmp_community),
             cmdgen.UdpTransportTarget((self.device_name, self.snmp_port)),
-            cmdgen.MibVariable(self.mib_version, self.mib_name, self.mib_id),
+            cmdgen.MibVariable(self.mib_name, self.symbol_name,
+                               self.mib_index),
             lookupNames=True, lookupValues=True)
 
         if errorIndication:
