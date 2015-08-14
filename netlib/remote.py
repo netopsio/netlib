@@ -136,9 +136,9 @@ class SNMP(object):
             lookupNames=True, lookupValues=True)
 
         if errorIndication:
-            print(errorIndication)
+            return errorIndication
         elif errorStatus:
-            print(errorStatus)
+            return errorStatus
         else:
             for name, val in varBinds:
                 return val.prettyPrint()
