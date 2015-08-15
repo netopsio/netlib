@@ -1,12 +1,13 @@
 class SSH(object):
 
     def __init__(self, device_name, username, password, buffer="65535",
-                 delay="1"):
+                 delay="1", port="22"):
         self.device_name = device_name
         self.username = username
         self.password = password
         self.buffer = buffer
         self.delay = delay
+        self.port = int(port)
 
     def connect(self):
         import paramiko
@@ -16,7 +17,7 @@ class SSH(object):
         self.pre_conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.pre_conn.connect(self.device_name, username=self.username,
                               password=self.password, allow_agent=False,
-                              look_for_keys=False)
+                              look_for_keys=False, port=self.port)
         self.client_conn = self.pre_conn.invoke_shell()
         time.sleep(float(self.delay))
         return self.client_conn.recv(self.buffer)
@@ -65,17 +66,18 @@ class SSH(object):
 
 class Telnet(object):
 
-    def __init__(self, device_name, username, password, delay="2"):
+    def __init__(self, device_name, username, password, delay="2", port="23"):
         self.device_name = device_name
         self.username = username
         self.password = password
         self.delay = float(delay)
+        self.port = int(port)
 
     def connect(self):
         import telnetlib
         import sys
 
-        self.access = telnetlib.Telnet(self.device_name)
+        self.access = telnetlib.Telnet(self.device_name, self.port)
         login_prompt = self.access.read_until("\(Username: \)|\(login: \)",
                                               self.delay)
         if 'login' in login_prompt:
