@@ -123,7 +123,7 @@ class SNMPv2(object):
         self.device_name = device_name
         self.snmp_community = snmp_community
         self.symbol_name = symbol_name
-        self.mib_index= mib_index
+        self.mib_index = mib_index
         self.mib_name = mib_name
         self.snmp_version = snmp_version
         self.snmp_port = snmp_port
@@ -133,13 +133,11 @@ class SNMPv2(object):
 
         cmdGen = cmdgen.CommandGenerator()
         error_indication, error_status, error_index, data = cmdGen.getCmd(
-                                cmdgen.CommunityData(self.snmp_community),
-                                cmdgen.UdpTransportTarget((self.device_name,
-                                                           self.snmp_port)),
-                                cmdgen.MibVariable(self.mib_name,
-                                                   self.symbol_name,
-                                                   self.mib_index),
-                                lookupNames=True, lookupValues=True)
+            cmdgen.CommunityData(self.snmp_community),
+            cmdgen.UdpTransportTarget((self.device_name, self.snmp_port)),
+            cmdgen.MibVariable(self.mib_name, self.symbol_name,
+                               self.mib_index),
+            lookupNames=True, lookupValues=True)
 
         if error_indication:
             self.error_indication = error_indication
