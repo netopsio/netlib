@@ -1,5 +1,7 @@
-ecdsa>=0.13
-paramiko>=1.15.2
-pyasn1>=0.1.8
-pycrypto>=2.6.1
-pysnmp>=4.2.5
+PyYAML==3.11
+ecdsa==0.13
+paramiko==1.15.2
+pyasn1==0.1.8
+pycrypto==2.6.1
+pysnmp==4.2.5
+wsgiref==0.1.2

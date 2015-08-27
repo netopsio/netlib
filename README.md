@@ -20,8 +20,8 @@ connections are established to network devices.
 
 To use either the SSH or Telnet module, you need to import the library into your script:
 
-    from netlib.remote import SSH
-    from netlib.remote import Telnet
+    from netlib.conn_type import SSH
+    from netlib.conn_type import Telnet
 
 From there, you define your connection parameters:
 
@@ -73,7 +73,7 @@ version 2. Version 3 support will hopefully come soon.
 To use the SNMP functionality, you will need to import the module into your
 python script.
 
-    from netlib.remote import SNMPv2
+    from netlib.conn_type import SNMPv2
 
 From there, enter your polling parameters.
 
@@ -91,3 +91,71 @@ readable format, you will need to call the extract method.
 
 Again, the functionality of the SNMP module is still very limited. I hope to
 work on it soon and create a more robust functionality for SNMP.
+
+## User Credentials
+
+When working with a large number of devices, it's inconvenient to have to type
+your credentials in a large number of times and storing your credentials
+directly into a script can be insecure. Therefore, I created a library that
+allows you to store them, in a file (still in-securely, but at least it's not
+directly in a script that could be shared).
+
+There are two methods. The first is a 'simple' method, which simple creates a
+file and stores the credentials in the format of:
+
+    username
+    password
+    enablepassword
+
+The second method stores the credentials as a yaml file:
+
+    username: some_user
+    password: some_pass
+    enable: some_l33t_pass
+
+To call these methods you import the library:
+
+    from netlib.user_creds import simple
+    from netlib.user_creds import yaml
+
+Note, that you only need to use one method. Next, you call the method and
+define your parameters:
+
+    simple = simple(creds_file='.tacacs')
+    yaml = simple(creds_file='.tacacs.yml')
+
+The default file name for simple is '.tacacslogin' and for yaml it's
+'.tacacs.yml', respectively. These files are stored in your home directory
+(~/).
+
+If the files don't exist, then you are prompted for your credentials, so that
+you can create them.
+
+    >>> from netlib.user_creds import yaml
+    >>> y = yaml(creds_file='.tacacs.yml')
+    Username: jtdub
+    User Password: 
+    Confirm Password: 
+    Error: Your user passwords do not match.
+    
+    User Password: 
+    Confirm Password: 
+    Enable Password: 
+    Confirm Password: 
+    Creating the credentials file, as it does not exist.
+    File Location: /Users/jtdub/.tacacs.yml
+
+As you can see, if your passwords do not match, then it prompts you to re-enter
+your passwords. From here, your credentials are passed to your script in the
+form of a dictionary:
+
+    >>> y
+    {'username': 'jtdub', 'enable': 'tew', 'password': 'asdf'}
+    >>>
+
+This is true for both simple and yaml formats.
+
+## SNMP Credentials
+
+Storage and usage of SNMP credentials will be created when I flesh out SNMP
+functionality of the library.
