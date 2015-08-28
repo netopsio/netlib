@@ -58,7 +58,7 @@ def simple(creds_file=".tacacslogin"):
         return simple_creds
 
 
-def yaml(creds_file=".tacacs.yml"):
+def simple_yaml(creds_file=".tacacs.yml"):
     from os.path import expanduser
     from os.path import isfile
     import yaml
