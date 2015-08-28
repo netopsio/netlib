@@ -116,23 +116,23 @@ The second method stores the credentials as a yaml file:
 To call these methods you import the library:
 
     from netlib.user_creds import simple
-    from netlib.user_creds import yaml
+    from netlib.user_creds import simple_yaml
 
 Note, that you only need to use one method. Next, you call the method and
 define your parameters:
 
     simple = simple(creds_file='.tacacs')
-    yaml = simple(creds_file='.tacacs.yml')
+    simple_yaml = simple(creds_file='.tacacs.yml')
 
-The default file name for simple is '.tacacslogin' and for yaml it's
+The default file name for simple is '.tacacslogin' and for simple_yaml it's
 '.tacacs.yml', respectively. These files are stored in your home directory
 (~/).
 
 If the files don't exist, then you are prompted for your credentials, so that
 you can create them.
 
-    >>> from netlib.user_creds import yaml
-    >>> y = yaml(creds_file='.tacacs.yml')
+    >>> from netlib.user_creds import simple_yaml
+    >>> y = simple_yaml(creds_file='.tacacs.yml')
     Username: jtdub
     User Password: 
     Confirm Password: 
