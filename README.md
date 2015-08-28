@@ -122,7 +122,7 @@ Note, that you only need to use one method. Next, you call the method and
 define your parameters:
 
     simple = simple(creds_file='.tacacs')
-    simple_yaml = simple(creds_file='.tacacs.yml')
+    yaml = simple_yaml(creds_file='.tacacs.yml')
 
 The default file name for simple is '.tacacslogin' and for simple_yaml it's
 '.tacacs.yml', respectively. These files are stored in your home directory
