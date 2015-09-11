@@ -54,7 +54,7 @@ class SSH(object):
         self.client_conn.sendall(command + "\n")
         not_done = True
         output = ""
-        self.clear_buffer()
+        #self.clear_buffer()
         while not_done:
             time.sleep(float(self.delay))
             if self.client_conn.recv_ready():
@@ -93,6 +93,9 @@ class Telnet(object):
 
     def close(self):
         return self.access.close()
+
+    def clear_buffer(self):
+        pass
 
     def set_enable(self, enable_password):
         import re
