@@ -17,5 +17,6 @@ setup(
     description='Simple access to network devices, such as routers and switches, via Telnet, SSH, and SNMP',
     packages=[
         'netlib',
-    ]
+    ],
+    package_data={'netlib':['*']},
 )
