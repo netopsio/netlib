@@ -9,7 +9,6 @@ and SNMP connection to network devices, such as routers and switches.
 
     git clone https://github.com/jtdub/netlib.git
     cd netlib
-    sudo pip install -r requirements.txt
     sudo python setup.py install
 
 ## Access via Telnet and SSH

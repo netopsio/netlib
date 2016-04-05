@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
 
 
 setup(
@@ -10,11 +10,9 @@ setup(
     author='James Williams',
     license='MIT',
     install_requires=[
-        'ecdsa>=0.13',
-        'paramiko>=1.15.2',
-        'pyasn1>=0.1.8',
-        'pycrypto>=2.6.1',
-        'pysnmp>=4.2.5'
+        'paramiko',
+        'pycrypto',
+        'pysnmp'
     ],
     description='Simple access to network devices, such as routers and switches, via Telnet, SSH, and SNMP',
     packages=['netlib', ]
