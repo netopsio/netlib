@@ -15,5 +15,7 @@ setup(
         'pysnmp'
     ],
     description='Simple access to network devices, such as routers and switches, via Telnet, SSH, and SNMP',
-    packages=['netlib', ]
+    packages=[
+        'netlib',
+    ]
 )
