@@ -9,7 +9,6 @@ and SNMP connection to network devices, such as routers and switches.
 
     git clone https://github.com/jtdub/netlib.git
     cd netlib
-    sudo pip install -r requirements.txt
     sudo python setup.py install
 
 ## Access via Telnet and SSH
@@ -21,7 +20,7 @@ connections are established to network devices.
 To use either the SSH or Telnet module, you need to import the library into your script:
 
     from netlib.conn_type import SSH
-    from netlib.conn_type import Telnet
+    from netlib.conn_type import Telnet 
 
 From there, you define your connection parameters:
 
