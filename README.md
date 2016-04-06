@@ -19,12 +19,13 @@ connections are established to network devices.
 
 To use either the SSH or Telnet module, you need to import the library into your script:
 
-    from netlib import conn_type
+    from netlib.conn_type import SSH
+    from netlib.conn_type import Telnet 
 
 From there, you define your connection parameters:
 
-    telnet = conn_type.Telnet('somerouter', 'username', 'password')
-    ssh = conn_type.SSH('somerouter', 'username', 'password')
+    telnet = Telnet('somerouter', 'username', 'password')
+    ssh = SSH('somerouter', 'username', 'password')
 
 Once the basic parameters have been set, you establish a connection to the
 device.
@@ -71,11 +72,11 @@ version 2. Version 3 support will hopefully come soon.
 To use the SNMP functionality, you will need to import the module into your
 python script.
 
-    from netlib import conn_type
+    from netlib.conn_type import SNMPv2
 
 From there, enter your polling parameters.
 
-    r = conn_type.SNMPv2('somerouter', 'superl33tr34d0ly_community', mib_name='SNMPv2-MIB',
+    r = SNMPv2('somerouter', 'superl33tr34d0ly_community', mib_name='SNMPv2-MIB',
              symbol_name='sysDescr', mib_index='0')
 
 Then you poll the device.
@@ -113,13 +114,14 @@ The second method stores the credentials as a yaml file:
 
 To call these methods you import the library:
 
-    from netlib import user_creds
+    from netlib.user_creds import simple
+    from netlib.user_creds import simple_yaml
 
 Note, that you only need to use one method. Next, you call the method and
 define your parameters:
 
-    simple = user_creds.simple(creds_file='.tacacs')
-    yaml = user_creds.simple_yaml(creds_file='.tacacs.yml')
+    simple = simple(creds_file='.tacacs')
+    yaml = simple_yaml(creds_file='.tacacs.yml')
 
 The default file name for simple is '.tacacslogin' and for simple_yaml it's
 '.tacacs.yml', respectively. These files are stored in your home directory
