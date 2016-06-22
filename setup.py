@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='netlib',
-    version='0.0.4',
+    version='0.0.5',
     url='https://github.com/jtdub/netlib',
     author='James Williams',
     license='MIT',
@@ -13,7 +13,8 @@ setup(
         'paramiko',
         'pycrypto',
         'pysnmp',
-        'keyring'
+        'keyring',
+        'keyrings.alt'
     ],
     description='Simple access to network devices, such as routers and switches, via Telnet, SSH, and SNMP',
     packages=[
