@@ -96,65 +96,56 @@ work on it soon and create a more robust functionality for SNMP.
 When working with a large number of devices, it's inconvenient to have to type
 your credentials in a large number of times and storing your credentials
 directly into a script can be insecure. Therefore, I created a library that
-allows you to store them, in a file (still in-securely, but at least it's not
-directly in a script that could be shared).
+allows you to store them, securely utilizing the 'keyring' python library.
+'keyring' utilizes your operating systems native method for storing passwords.
+For example, in MacOS X, the Keychain utility is utilized.
 
-There are two methods. The first is a 'simple' method, which simple creates a
-file and stores the credentials in the format of:
+The past methods of password storage, simple_creds and simple_yaml have been depricated
+and removed from netlib.
 
-    username
-    password
-    enablepassword
+Utilizing the keyring is simple. Import the module:
 
-The second method stores the credentials as a yaml file:
+```
+>>> from netlib.user_keyring import KeyRing
+```
 
-    username: some_user
-    password: some_pass
-    enable: some_l33t_pass
+Asign it to a variable, calling your username:
+```
+>>> user = KeyRing(username='jtdub')
+```
 
-To call these methods you import the library:
+If there are no credentials for the keyring, the get_creds() method will call the set_creds()
+method:
+```
+>>> user.get_creds()
+No credentials keyring exist. Creating new credentials.
+Enter your user password: 
+Confirm your user password: 
+Enter your enable password: 
+Confirm your enable password: 
+```
 
-    from netlib.user_creds import simple
-    from netlib.user_creds import simple_yaml
+Otherwise, the creds will be pulled from the keyring:
+```
+>>> user.get_creds()
+{'username': 'jtdub', 'enable': u'enablepass', 'password': u'testpass'}
+```
 
-Note, that you only need to use one method. Next, you call the method and
-define your parameters:
+The set_creds() method can be called directly. It will over-write existing creds if they exist:
+```
+>>> user.set_creds()
+Enter your user password: 
+Confirm your user password: 
+Enter your enable password: 
+Confirm your enable password: 
+>>> user.get_creds()
+{'username': 'jtdub', 'enable': u'newenable', 'password': u'newpass'}
+```
 
-    simple = simple(creds_file='.tacacs')
-    yaml = simple_yaml(creds_file='.tacacs.yml')
-
-The default file name for simple is '.tacacslogin' and for simple_yaml it's
-'.tacacs.yml', respectively. These files are stored in your home directory
-(~/).
-
-If the files don't exist, then you are prompted for your credentials, so that
-you can create them.
-
-    >>> from netlib.user_creds import simple_yaml
-    >>> y = simple_yaml(creds_file='.tacacs.yml')
-    Username: jtdub
-    User Password: 
-    Confirm Password: 
-    Error: Your user passwords do not match.
-    
-    User Password: 
-    Confirm Password: 
-    Enable Password: 
-    Confirm Password: 
-    Creating the credentials file, as it does not exist.
-    File Location: /Users/jtdub/.tacacs.yml
-
-As you can see, if your passwords do not match, then it prompts you to re-enter
-your passwords. From here, your credentials are passed to your script in the
-form of a dictionary:
-
-    >>> y
-    {'username': 'jtdub', 'enable': 'tew', 'password': 'asdf'}
-    >>>
-
-This is true for both simple and yaml formats.
-
-## SNMP Credentials
-
-Storage and usage of SNMP credentials will be created when I flesh out SNMP
-functionality of the library.
+Of course, the keyring can be deleted all together utilizing the del_creds() method:
+```
+>>> user.del_creds()
+Enter your user password: 
+Deleting keyring credentials for jtdub
+>>> 
+```
