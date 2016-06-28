@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 from setuptools import setup
+from netlib import __version__
 
 
 setup(
     name='netlib',
-    version='0.0.5',
+    version=__version__,
     url='https://github.com/jtdub/netlib',
     author='James Williams',
     license='MIT',
@@ -20,5 +21,5 @@ setup(
     packages=[
         'netlib',
     ],
-    package_data={'netlib':['*']},
+    # package_data={'netlib':['*.py']},
 )

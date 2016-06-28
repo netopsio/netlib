@@ -1,4 +1,7 @@
 class SSH(object):
+    import paramiko
+    import time
+    import re
 
     def __init__(self, device_name, username, password, buffer="65535",
                  delay="1", port="22"):
@@ -10,9 +13,6 @@ class SSH(object):
         self.port = int(port)
 
     def connect(self):
-        import paramiko
-        import time
-
         self.pre_conn = paramiko.SSHClient()
         self.pre_conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.pre_conn.connect(self.device_name, username=self.username,
@@ -32,8 +32,6 @@ class SSH(object):
             return None
 
     def set_enable(self, enable_password):
-        import re
-
         if re.search('>$', self.command('\n')):
             enable = self.command('enable')
             if re.search('Password', enable):
@@ -49,12 +47,9 @@ class SSH(object):
         return self.client_conn.sendall(command + "\n")
 
     def command(self, command):
-        import time
-
         self.client_conn.sendall(command + "\n")
         not_done = True
         output = ""
-        #self.clear_buffer()
         while not_done:
             time.sleep(float(self.delay))
             if self.client_conn.recv_ready():
@@ -65,6 +60,9 @@ class SSH(object):
 
 
 class Telnet(object):
+    import telnetlib
+    import time
+    import re
 
     def __init__(self, device_name, username, password, delay="2", port="23"):
         self.device_name = device_name
@@ -74,9 +72,6 @@ class Telnet(object):
         self.port = int(port)
 
     def connect(self):
-        import telnetlib
-        import sys
-
         self.access = telnetlib.Telnet(self.device_name, self.port)
         login_prompt = self.access.read_until("\(Username: \)|\(login: \)",
                                               self.delay)
@@ -98,8 +93,6 @@ class Telnet(object):
         pass
 
     def set_enable(self, enable_password):
-        import re
-
         if re.search('>$', self.command('\n')):
             self.access.write('enable\n')
             enable = self.access.read_until('Password')
@@ -119,6 +112,7 @@ class Telnet(object):
 
 
 class SNMPv2(object):
+    from pysnmp.entity.rfc3413.oneliner import cmdgen
 
     def __init__(self, device_name, snmp_community, symbol_name="sysDescr",
                  mib_index="0", mib_name="SNMPv2-MIB", snmp_version="2c",
@@ -132,8 +126,6 @@ class SNMPv2(object):
         self.snmp_port = snmp_port
 
     def get(self):
-        from pysnmp.entity.rfc3413.oneliner import cmdgen
-
         cmdGen = cmdgen.CommandGenerator()
         error_indication, error_status, error_index, data = cmdGen.getCmd(
             cmdgen.CommunityData(self.snmp_community),

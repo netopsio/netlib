@@ -1,5 +1,7 @@
-__name__ = 'netlib'
-__version__ = '0.0.5'
+from __future__ import division
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
 
-import conn_type
-import user_keyring
+__name__ = 'netlib'
+__version__ = '0.0.6'

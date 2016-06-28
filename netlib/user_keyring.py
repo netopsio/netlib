@@ -1,10 +1,11 @@
 class KeyRing(object):
 
     def __init__(self, username):
+        import keyring
+        import getpass
         self.username = username
 
     def get_creds(self):
-        import keyring
 
         if keyring.get_password('nl_user_pass',
                                 username=self.username) is None:
@@ -22,9 +23,6 @@ class KeyRing(object):
                     'enable': enable_pass}
 
     def set_creds(self):
-        import getpass
-        import keyring
-
         match = False
         while match is False:
             password1 = getpass.getpass('Enter your user password: ')
@@ -55,9 +53,6 @@ class KeyRing(object):
         self.get_creds()
 
     def del_creds(self):
-        import getpass
-        import keyring
-
         tries = 0
         max_tries = 5
 
@@ -77,5 +72,3 @@ class KeyRing(object):
             else:
                 tries += 1
                 print('Error: Incorrect password.')
-                print user_pass
-                print ask_pass
