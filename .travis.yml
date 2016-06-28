@@ -6,8 +6,6 @@ python:
   - "3.4"
   - "3.5"
   - "nightly"
-  - "pypy"
-  - "pypy3"
 sudo: required
 install: "python setup.py install"
 script: nosetests 
