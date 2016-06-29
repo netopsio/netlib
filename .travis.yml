@@ -9,4 +9,4 @@ python:
 sudo: required
 install: "python setup.py install"
 script: 
-  - python ./scripts/tests.py 
+  - ./scripts/tests.py 
