@@ -8,5 +8,5 @@ python:
   - "nightly"
 sudo: required
 install: "python setup.py install"
-install: "pip install mockssh"
-script: nosetests 
+script: 
+  - python ./scripts/tests.py 
