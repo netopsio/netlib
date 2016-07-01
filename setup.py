@@ -21,5 +21,4 @@ setup(
     packages=[
         'netlib',
     ],
-    # package_data={'netlib':['*.py']},
 )

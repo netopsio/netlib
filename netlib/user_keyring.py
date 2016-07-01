@@ -18,8 +18,8 @@ class KeyRing(object):
             enable_pass = self.keyring.get_password('nl_enable_pass',
                                                     username=self.username)
             return {'username': self.username,
-                    'password': user_pass,
-                    'enable': enable_pass}
+                    'password': str(user_pass),
+                    'enable': str(enable_pass)}
 
     def set_creds(self):
         match = False
