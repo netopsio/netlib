@@ -58,6 +58,13 @@ class SSH(object):
                 not_done = False
         return output
 
+    def commands(self, commands_list):
+        if list(commands_list):
+            for command in commands_list:
+                self.command(command)
+        else:
+            self.command(command)
+
 
 class Telnet(object):
     import telnetlib
@@ -109,6 +116,13 @@ class Telnet(object):
     def command(self, command):
         self.access.write(command + '\n')
         return self.access.read_until("\(#\)|\(>\)", self.delay)
+
+    def commands(self, commands_list):
+        if list(commands_list):
+            for command in commands_list:
+                self.command(command)
+        else:
+            self.command(command)
 
 
 class SNMPv2(object):

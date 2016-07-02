@@ -1,5 +1,7 @@
 # NetLib
 
+[![Build Status](https://travis-ci.org/jtdub/netlib.svg)](https://travis-ci.org/jtdub/netlib)
+
 Netlib is my attempt at re-writing my
 ['pyRouterLib'](https://github.com/jtdub/pyRouterLib). The goal is to create a
 library that is much more efficient and easier to use to establish SSH, Telnet,
