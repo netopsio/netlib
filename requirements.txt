@@ -1,0 +1,5 @@
+keyring>=9.3
+keyrings.alt>=1.1.1
+paramiko>=2.0.1
+pycrypto>=2.6.1
+pysnmp>=4.3.2
