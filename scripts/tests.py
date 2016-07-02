@@ -3,19 +3,12 @@
 import unittest
 import keyring
 
-from netlib.user_keyring import KeyRing
-
-creds = {'username': 'testuser', 'password': 'testpass', 'enable': 'enabletest'}
-
 class TestKeyRing(unittest.TestCase):
-    user = KeyRing(username=creds['username'])
-    # keyring.set_password('nl_user_pass', username=creds['username'], password=creds['password'])
-    # keyring.set_password('nl_user_enable', username=creds['username'], password=creds['enable'])
+    creds = {'username': 'testuser', 'password': 'testpass', 'enable': 'enabletest'}
 
 class TestSetCreds(TestKeyRing):
     def test_1(self):
-        pass
-        # self.assertEquals(self.user.get_creds(), creds)
+        self.assertEquals(creds)
 
 if __name__ == '__main__':
     unittest.main()
