@@ -1,8 +1,8 @@
 # NetLib
 
-[![Build Status](https://travis-ci.org/jtdub/netlib.svg)](https://travis-ci.org/jtdub/netlib)
+[![Build Status](https://travis-ci.org/netopsio/netlib.svg)](https://travis-ci.org/netopsio/netlib)
 
-Netlib is my attempt at re-writing my
+Netlib is an attempt at re-writing
 ['pyRouterLib'](https://github.com/jtdub/pyRouterLib). The goal is to create a
 library that is much more efficient and easier to use to establish SSH, Telnet,
 and SNMP connection to network devices, such as routers and switches.
