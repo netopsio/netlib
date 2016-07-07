@@ -4,4 +4,4 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 __name__ = 'netlib'
-__version__ = '0.0.6'
+__version__ = '0.0.7'
