@@ -52,11 +52,11 @@ class SSH(object):
     def command(self, command):
         self.client_conn.sendall(command + "\n")
         not_done = True
-        output = ""
+        output = str()
         while not_done:
             self.time.sleep(float(self.delay))
             if self.client_conn.recv_ready():
-                output += self.client_conn.recv(self.buffer)
+                output += self.client_conn.recv(self.buffer).decode('utf-8')
             else:
                 not_done = False
         return output
@@ -85,18 +85,18 @@ class Telnet(object):
         self.port = int(port)
 
     def connect(self):
-        self.access = telnetlib.Telnet(self.device_name, self.port)
-        login_prompt = self.access.read_until("\(Username: \)|\(login: \)",
+        self.access = self.telnetlib.Telnet(self.device_name, self.port)
+        login_prompt = self.access.read_until(b"\(Username: \)|\(login: \)",
                                               self.delay)
-        if 'login' in login_prompt:
+        if b'login' in login_prompt:
             self.is_nexus = True
-            self.access.write(self.username + '\n')
-        elif 'Username' in login_prompt:
+            self.access.write(self.username.encode('ascii') + b'\n')
+        elif b'Username' in login_prompt:
             self.is_nexus = False
-            self.access.write(self.username + '\n')
-        password_prompt = self.access.read_until('Password:',
+            self.access.write(self.username.encode('ascii') + b'\n')
+        password_prompt = self.access.read_until(b'Password:',
                                                  self.delay)
-        self.access.write(self.password + '\n')
+        self.access.write(self.password.encode('ascii') + b'\n')
         return self.access
 
     def close(self):
@@ -106,22 +106,22 @@ class Telnet(object):
         pass
 
     def set_enable(self, enable_password):
-        if self.re.search('>$', self.command('\n')):
-            self.access.write('enable\n')
-            enable = self.access.read_until('Password')
-            return self.access.write(enable_password + '\n')
-        elif self.re.search('#$', self.command('\n')):
+        if self.re.search(b'>$', self.command('\n')):
+            self.access.write(b'enable\n')
+            enable = self.access.read_until(b'Password')
+            return self.access.write(enable_password.encode('ascii') + b'\n')
+        elif self.re.search(b'#$', self.command('\n')):
             return "Action: None. Already in enable mode."
         else:
             return "Error: Unable to determine user privilege status."
 
     def disable_paging(self, command='term len 0'):
-        self.access.write(command + '\n')
-        return self.access.read_until("\(#\)|\(>\)", self.delay)
+        self.access.write(command.encode('ascii') + b'\n')
+        return self.access.read_until(b"\(#\)|\(>\)", self.delay)
 
     def command(self, command):
-        self.access.write(command + '\n')
-        return self.access.read_until("\(#\)|\(>\)", self.delay)
+        self.access.write(command.encode('ascii') + b'\n')
+        return self.access.read_until(b"\(#\)|\(>\)", self.delay)
 
     def commands(self, commands_list):
         if list(commands_list):
