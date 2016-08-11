@@ -11,8 +11,8 @@ class SSH(object):
         self.device_name = device_name
         self.username = username
         self.password = password
-        self.buffer = buffer
-        self.delay = delay
+        self.buffer = int(buffer)
+        self.delay = int(delay)
         self.port = int(port)
 
     def connect(self):
