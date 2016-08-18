@@ -30,7 +30,7 @@ class SSH(object):
 
     def clear_buffer(self):
         if self.client_conn.recv_ready():
-            return self.client_conn.recv(self.buffer)
+            return self.client_conn.recv(self.buffer).decode('utf-8', 'ignore')
         else:
             return None
 
@@ -46,8 +46,8 @@ class SSH(object):
             return "Error: Unable to determine user privilege status."
 
     def disable_paging(self, command='term len 0'):
+        self.client_conn.sendall(command + "\n")
         self.clear_buffer()
-        return self.client_conn.sendall(command + "\n")
 
     def command(self, command):
         self.client_conn.sendall(command + "\n")
@@ -62,11 +62,13 @@ class SSH(object):
         return output
 
     def commands(self, commands_list):
+        output = str()
         if list(commands_list):
             for command in commands_list:
-                self.command(command)
+                output += self.command(command)
         else:
-            self.command(command)
+            output += self.command(commands_list)
+        return output
 
 
 class Telnet(object):
@@ -124,47 +126,28 @@ class Telnet(object):
         return self.access.read_until(b"\(#\)|\(>\)", self.delay)
 
     def commands(self, commands_list):
+        output = str()
         if list(commands_list):
             for command in commands_list:
-                self.command(command)
+                output += self.command(command)
         else:
-            self.command(command)
+            output += self.command(commands_list)
+        return output
 
 
 class SNMPv2(object):
 
-    def __init__(self, device_name, snmp_community, symbol_name="sysDescr",
-                 mib_index="0", mib_name="SNMPv2-MIB", snmp_version="2c",
-                 snmp_port="161"):
-        from pysnmp.entity.rfc3413.oneliner import cmdgen
-        self.cmdgen = cmdgen
-        self.device_name = device_name
-        self.snmp_community = snmp_community
-        self.symbol_name = symbol_name
-        self.mib_index = mib_index
-        self.mib_name = mib_name
-        self.snmp_version = snmp_version
-        self.snmp_port = snmp_port
+    def __init__(self, device_name, snmp_community, oid_name="sysDescr.0",
+                 snmp_version="2"):
+        from easysnmp import snmp_get
+        self.snmp_get = snmp_get
+        self.device_name = str(device_name)
+        self.snmp_community = str(snmp_community)
+        self.oid_name = str(oid_name)
+        self.snmp_version = int(snmp_version)
 
     def get(self):
-        cmdGen = self.cmdgen.CommandGenerator()
-        error_indication, error_status, error_index, data = cmdGen.getCmd(
-            cmdgen.CommunityData(self.snmp_community),
-            cmdgen.UdpTransportTarget((self.device_name, self.snmp_port)),
-            cmdgen.MibVariable(self.mib_name, self.symbol_name,
-                               self.mib_index),
-            lookupNames=True, lookupValues=True)
-
-        if error_indication:
-            self.error_indication = error_indication
-            return self.error_indication
-        elif error_status:
-            self.error_status = error_status
-            return self.error_status
-        else:
-            self.data = data
-            return self.data
-
-    def extract(self):
-            for name, value in self.data:
-                return value.prettyPrint()
+        snmp = self.snmp_get(self.oid_name, hostname=self.device_name,
+                             version=self.snmp_version,
+                             community=self.snmp_community)
+        return snmp.value
