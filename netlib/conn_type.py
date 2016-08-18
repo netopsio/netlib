@@ -17,7 +17,8 @@ class SSH(object):
 
     def connect(self):
         self.pre_conn = self.paramiko.SSHClient()
-        self.pre_conn.set_missing_host_key_policy(self.paramiko.AutoAddPolicy())
+        self.pre_conn.set_missing_host_key_policy(
+            self.paramiko.AutoAddPolicy())
         self.pre_conn.connect(self.device_name, username=self.username,
                               password=self.password, allow_agent=False,
                               look_for_keys=False, port=self.port)
