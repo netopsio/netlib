@@ -8,9 +8,8 @@ python:
   - "nightly"
 sudo: required
 before_install: 
-  - "sudo apt-get update"
-  - "sudo apt-get install -y libsnmp-dev snmp-mibs-downloader"
-  - "sudo apt-get install -y autoconf libtool make libperl-dev python-dev"
+  - "sudo apt-get update -y"
+  - "sudo apt-get install python-pip python-dev python3-dev libsnmp-dev libffi-dev snmp-mibs-downloader"
 install:
   - "python setup.py install"
 script: 

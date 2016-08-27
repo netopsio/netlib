@@ -14,7 +14,7 @@ To be able to use the snmp utilities, you will need the development packages for
 Debian-Based Linux:
 
 ```
-sudo apt-get install libsnmp-dev snmp-mibs-downloader
+sudo apt-get install python-pip python-dev python3-dev libsnmp-dev libffi-dev snmp-mibs-downloader
 ```
 
 Redhat-Based Linux:
