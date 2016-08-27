@@ -13,7 +13,7 @@ setup(
     install_requires=[
         'paramiko',
         'pycrypto',
-        'pysnmp',
+        'easysnmp',
         'keyring',
         'keyrings.alt'
     ],
