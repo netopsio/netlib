@@ -20,7 +20,7 @@ sudo apt-get install python-pip python-dev python3-dev libsnmp-dev libffi-dev sn
 Redhat-Based Linux:
 
 ```
-sudo yum -y install net-snmp-devel
+sudo yum -y install net-snmp-devel python-devel libffi-devel
 ```
 
 Other than that, it's just a matter of installing the Python library.
