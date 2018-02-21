@@ -4,26 +4,12 @@
 
 Netlib is an attempt at re-writing
 ['pyRouterLib'](https://github.com/jtdub/pyRouterLib). The goal is to create a
-library that is much more efficient and easier to use to establish SSH, Telnet,
-and SNMP connection to network devices, such as routers and switches.
+library that is much more efficient and easier to use to establish SSH and Telnet
+connections to network devices, such as routers and switches.
 
 ## Install
 
-To be able to use the snmp utilities, you will need the development packages for net-snmp installed.
-
-Debian-Based Linux:
-
-```
-sudo apt-get install python-pip python-dev python3-dev libsnmp-dev libffi-dev snmp-mibs-downloader
-```
-
-Redhat-Based Linux:
-
-```
-sudo yum -y install net-snmp-devel python-devel libffi-devel
-```
-
-Other than that, it's just a matter of installing the Python library.
+Install the Python library.
 
 ```
 git clone https://github.com/jtdub/netlib.git
@@ -102,34 +88,6 @@ ssh.clear_buffer()
 The SSH library stores output into a buffer. Sometimes this buffer can present
 results that aren't expected. Clearing the buffer should mitigate the
 unexpected results.
-
-## SNMP
-
-SNMP functionality is still very experimental. It currently only supports SNMP
-version 2. Version 3 support will hopefully come soon.
-
-To use the SNMP functionality, you will need to import the module into your
-python script.
-
-```
->>> from netlib.conn_type import SNMPv2
-```
-
-From there, enter your polling parameters.
-
-```
->>> s = SNMPv2(device_name='somerouter', snmp_community='somecommunity', oid_name='sysDescr.0')
-```
-
-Then you poll the device.
-
-```
->>> s.get()
-u'Cisco IOS Software, C181X Software (C181X-ADVENTERPRISEK9-M), Version 15.1(4)M8, RELEASE SOFTWARE (fc2)\r\nTechnical Support: http://www.cisco.com/techsupport\r\nCopyright (c) 1986-2014 by Cisco Systems, Inc.\r\nCompiled Fri 07-Mar-14 07:42 by prod_rel_team'
-```
-
-Again, the functionality of the SNMP module is still very limited. I hope to
-work on it soon and create a more robust functionality for SNMP.
 
 ## User Credentials
 
