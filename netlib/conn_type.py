@@ -134,21 +134,3 @@ class Telnet(object):
         else:
             output += self.command(commands_list)
         return output
-
-
-class SNMPv2(object):
-
-    def __init__(self, device_name, snmp_community, oid_name="sysDescr.0",
-                 snmp_version="2"):
-        from easysnmp import snmp_get
-        self.snmp_get = snmp_get
-        self.device_name = str(device_name)
-        self.snmp_community = str(snmp_community)
-        self.oid_name = str(oid_name)
-        self.snmp_version = int(snmp_version)
-
-    def get(self):
-        snmp = self.snmp_get(self.oid_name, hostname=self.device_name,
-                             version=self.snmp_version,
-                             community=self.snmp_community)
-        return snmp.value

@@ -31,15 +31,6 @@ class TestImports(unittest.TestCase):
             raise
         self.assertTrue(telnet)
 
-    def test_import_snmpv2(self):
-        try:
-            from netlib.conn_type import SNMPv2
-            snmpv2 = True
-        except:
-            snmpv2 = False
-            raise
-        self.assertTrue(snmpv2)
-
 
 if __name__ == '__main__':
     unittest.main()
