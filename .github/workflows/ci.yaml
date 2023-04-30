@@ -1,0 +1,28 @@
+name: "CI"
+on: # yamllint disable
+  push:
+    branches:
+      - "master"
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - name: "CHECKOUT REPOSITORY"
+        uses: actions/checkout@v3
+      - name: "SETUP PYTHON ENVIRONMENT"
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: "SETUP POETRY ENVIRONMENT"
+        uses: "networktocode/gh-action-setup-poetry-environment@v4"
+      - name: "INVOKE PYLINT"
+        run: "poetry run invoke pylint"
+      - name: "INVOKE BLACK"
+        run: "poetry run invoke black"

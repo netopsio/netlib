@@ -16,3 +16,9 @@ def fmt(context):
 def pylint(context):
     """Run pylint."""
     context.run("pylint netlib/")
+
+
+@task
+def black(context):
+    """Run black."""
+    context.run("black --check netlib/")
