@@ -5,8 +5,10 @@ import time
 
 import paramiko
 
+from netlib.conn import send_commands
 
-class SSH:
+
+class SSH:  #  pylint: disable=too-many-instance-attributes
     """SSH Class."""
 
     def __init__(
@@ -80,10 +82,4 @@ class SSH:
 
     def commands(self, commands_list: list) -> str:
         """Enter a list of commands."""
-        output = str()
-        if list(commands_list):
-            for command in commands_list:
-                output += self.command(command)
-        else:
-            output += self.command(commands_list)
-        return output
+        return send_commands(self.command, commands_list)

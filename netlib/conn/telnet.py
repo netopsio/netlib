@@ -2,8 +2,12 @@
 import re
 import telnetlib
 
+from netlib.conn import send_commands
+
 
 class Telnet:
+    """Telnet class."""
+
     def __init__(
         self,
         device_name: str,
@@ -35,11 +39,11 @@ class Telnet:
 
     def clear_buffer(self) -> None:
         """Clear the buffer."""
-        pass
+        return
 
     def set_enable(self, enable_password: str):
         """Enter privileged mode."""
-        if re.search(b">$", self.command("\n")):
+        if re.search(b">$", self.command("\n")):  # pylint: disable=no-else-return
             self.access.write(b"enable\n")
             self.access.read_until(b"Password")
             return self.access.write(enable_password.encode("ascii") + b"\n")
@@ -58,11 +62,5 @@ class Telnet:
         return self.access.read_until(b"\(#\)|\(>\)", self.delay)
 
     def commands(self, commands_list: list) -> str:
-        """Send a list of commands."""
-        output = str()
-        if list(commands_list):
-            for command in commands_list:
-                output += self.command(command)
-        else:
-            output += self.command(commands_list)
-        return output
+        """Enter a list of commands."""
+        return send_commands(self.command, commands_list)
