@@ -10,3 +10,9 @@ def fmt(context):
     ]
     for command in commands:
         context.run(command)
+
+
+@task
+def pylint(context):
+    """Run pylint."""
+    context.run("pylint netlib/")
