@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "netlib"
+version = "1.0.0"
+description = "netlib is a python library that makes is easy and efficient to establish SSH and telnet connections to network devices, such as routers and switches."
+authors = ["James Williams <james.williams@packetgeek.net>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+keyring = "^23.13.1"
+"keyrings.alt" = "^4.2.0"
+paramiko = "^3.1.0"
+
+[tool.poetry.dev-dependencies]
+invoke = "^2.1.0"
+black = "^23.3.0"
+pytest = "^7.3.1"
+pylint = "^2.17.3"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
