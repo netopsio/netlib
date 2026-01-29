@@ -2,8 +2,6 @@
 
 from unittest.mock import MagicMock, Mock, patch
 
-import pytest
-
 from netlib.conn_type import Telnet
 
 
@@ -99,9 +97,7 @@ class TestTelnetCommands:
         """Test executing multiple commands from list."""
         telnet = Telnet("switch1", "admin", "secret")
 
-        with patch.object(
-            telnet, "command", return_value=b"output\n"
-        ) as mock_cmd:
+        with patch.object(telnet, "command", return_value=b"output\n") as mock_cmd:
             result = telnet.commands(["show version", "show interfaces"])
 
             assert mock_cmd.call_count == 2
@@ -111,9 +107,7 @@ class TestTelnetCommands:
         """Test executing single command as string."""
         telnet = Telnet("switch1", "admin", "secret")
 
-        with patch.object(
-            telnet, "command", return_value=b"output\n"
-        ) as mock_cmd:
+        with patch.object(telnet, "command", return_value=b"output\n") as mock_cmd:
             result = telnet.commands("show version")
 
             mock_cmd.assert_called_once_with("show version")

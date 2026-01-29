@@ -2,8 +2,6 @@
 
 from unittest.mock import MagicMock, Mock, patch
 
-import pytest
-
 from netlib.conn_type import SSH
 
 
@@ -47,9 +45,7 @@ class TestSSHConnect:
 
     @patch("netlib.conn_type.paramiko.SSHClient")
     @patch("netlib.conn_type.time.sleep")
-    def test_connect_success(
-        self, mock_sleep: Mock, mock_ssh_client: Mock
-    ) -> None:
+    def test_connect_success(self, mock_sleep: Mock, mock_ssh_client: Mock) -> None:
         """Test successful SSH connection."""
         # Setup mocks
         mock_client = MagicMock()

@@ -1,8 +1,6 @@
 """Tests for KeyRing credential management."""
 
-from unittest.mock import MagicMock, Mock, patch
-
-import pytest
+from unittest.mock import Mock, patch
 
 from netlib.user_keyring import KeyRing
 

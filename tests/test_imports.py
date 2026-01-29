@@ -1,6 +1,6 @@
 """Tests for module imports."""
 
-import pytest
+# ruff: noqa: PLC0415
 
 
 class TestImports:
@@ -26,7 +26,7 @@ class TestImports:
 
     def test_import_from_package(self) -> None:
         """Test importing from main package."""
-        from netlib import SSH, Telnet, KeyRing
+        from netlib import SSH, KeyRing, Telnet
 
         assert SSH is not None
         assert Telnet is not None
@@ -35,11 +35,11 @@ class TestImports:
     def test_import_models(self) -> None:
         """Test importing Pydantic models."""
         from netlib.models import (
-            SSHConnectionConfig,
-            TelnetConnectionConfig,
             CommandResponse,
             CredentialsData,
             EnableModeResponse,
+            SSHConnectionConfig,
+            TelnetConnectionConfig,
         )
 
         assert SSHConnectionConfig is not None

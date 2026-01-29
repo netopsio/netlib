@@ -36,4 +36,4 @@ except PackageNotFoundError:
 from netlib.conn_type import SSH, Telnet
 from netlib.user_keyring import KeyRing
 
-__all__ = ["SSH", "Telnet", "KeyRing"]
+__all__ = ["SSH", "KeyRing", "Telnet"]

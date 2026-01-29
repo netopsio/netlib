@@ -82,6 +82,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["ARG", "PLR2004"]
+"tests/test_imports.py" = ["ARG", "PLR2004", "PLC0415"]
 
 [tool.mypy]
 python_version = "3.10"

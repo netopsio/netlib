@@ -1,7 +1,5 @@
 """Pydantic models for input and output validation."""
 
-from typing import Any
-
 from pydantic import BaseModel, Field, SecretStr, field_validator
 
 
@@ -76,9 +74,7 @@ class EnableModeResponse(BaseModel):
     """Response from enable mode operations."""
 
     message: str = Field(..., description="Response message")
-    already_enabled: bool = Field(
-        default=False, description="Whether already in enable mode"
-    )
+    already_enabled: bool = Field(default=False, description="Whether already in enable mode")
     success: bool = Field(default=True, description="Whether operation succeeded")
 
     model_config = {"frozen": False}

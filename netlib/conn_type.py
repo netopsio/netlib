@@ -1,16 +1,13 @@
 """Network device connection classes for SSH and Telnet."""
 
 import re
+import telnetlib
 import time
-from typing import Any
 
 import paramiko
-import telnetlib
 from pydantic import SecretStr
 
 from netlib.models import (
-    CommandResponse,
-    EnableModeResponse,
     SSHConnectionConfig,
     TelnetConnectionConfig,
 )
@@ -118,8 +115,7 @@ class SSH:
         if re.search(r">$", current_prompt):
             enable_output = self.command("enable")
             if re.search("Password", enable_output):
-                send_pwd = self.command(pwd)
-                return send_pwd
+                return self.command(pwd)
         elif re.search(r"#$", current_prompt):
             return "Action: None. Already in enable mode."
         else:
@@ -225,9 +221,7 @@ class Telnet:
             OSError: If connection fails
         """
         self.access = telnetlib.Telnet(self.device_name, self.port)
-        login_prompt = self.access.read_until(
-            b"(Username: )|(login: )", self.delay
-        )
+        login_prompt = self.access.read_until(b"(Username: )|(login: )", self.delay)
         if b"login" in login_prompt:
             self.is_nexus = True
             self.access.write(self.username.encode("ascii") + b"\n")
@@ -271,10 +265,9 @@ class Telnet:
             self.access.read_until(b"Password")
             self.access.write(pwd.encode("ascii") + b"\n")
             return "Entered enable mode"
-        elif re.search(b"#$", current_prompt):
+        if re.search(b"#$", current_prompt):
             return "Action: None. Already in enable mode."
-        else:
-            return "Error: Unable to determine user privilege status."
+        return "Error: Unable to determine user privilege status."
 
     def disable_paging(self, command: str = "term len 0") -> bytes:
         """Disable paging on the device.
