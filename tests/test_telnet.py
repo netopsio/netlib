@@ -15,7 +15,7 @@ class TestTelnetInit:
         telnet = Telnet("switch1", "admin", "secret")
         assert telnet.device_name == "switch1"
         assert telnet.username == "admin"
-        assert telnet.password == "secret"
+        assert telnet._password.get_secret_value() == "secret"
         assert telnet.port == 23
         assert telnet.delay == 2.0
 

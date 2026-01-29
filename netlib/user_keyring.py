@@ -43,8 +43,8 @@ class KeyRing:
 
         return {
             "username": creds.username,
-            "password": creds.password,
-            "enable": creds.enable,
+            "password": creds.password.get_secret_value(),
+            "enable": creds.enable.get_secret_value(),
         }
 
     def set_creds(self) -> None:
@@ -78,8 +78,8 @@ class KeyRing:
         )
 
         # Store in keyring
-        keyring.set_password("nl_user_pass", self.username, creds.password)
-        keyring.set_password("nl_enable_pass", self.username, creds.enable)
+        keyring.set_password("nl_user_pass", self.username, creds.password.get_secret_value())
+        keyring.set_password("nl_enable_pass", self.username, creds.enable.get_secret_value())
 
         self.get_creds()
 

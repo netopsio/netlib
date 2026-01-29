@@ -24,7 +24,7 @@ class TestSSHConnectionConfig:
         )
         assert config.device_name == "router1"
         assert config.username == "admin"
-        assert config.password == "secret"
+        assert config.password.get_secret_value() == "secret"
         assert config.port == 22
         assert config.buffer == 65535
         assert config.delay == 1.0
@@ -116,8 +116,8 @@ class TestCredentialsData:
             enable="enablepass",
         )
         assert creds.username == "admin"
-        assert creds.password == "userpass"
-        assert creds.enable == "enablepass"
+        assert creds.password.get_secret_value() == "userpass"
+        assert creds.enable.get_secret_value() == "enablepass"
 
     def test_empty_password(self) -> None:
         """Test empty password validation."""

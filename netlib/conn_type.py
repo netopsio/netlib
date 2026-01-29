@@ -6,6 +6,7 @@ from typing import Any
 
 import paramiko
 import telnetlib
+from pydantic import SecretStr
 
 from netlib.models import (
     CommandResponse,
@@ -49,7 +50,7 @@ class SSH:
 
         self.device_name = config.device_name
         self.username = config.username
-        self.password = config.password
+        self._password = config.password  # SecretStr
         self.buffer = config.buffer
         self.delay = config.delay
         self.port = config.port
@@ -71,7 +72,7 @@ class SSH:
         self.pre_conn.connect(
             self.device_name,
             username=self.username,
-            password=self.password,
+            password=self._password.get_secret_value(),
             allow_agent=False,
             look_for_keys=False,
             port=self.port,
@@ -97,20 +98,27 @@ class SSH:
             return self.client_conn.recv(self.buffer).decode("utf-8", "ignore")
         return None
 
-    def set_enable(self, enable_password: str) -> str:
+    def set_enable(self, enable_password: str | SecretStr) -> str:
         """Enter privileged/enable mode.
 
         Args:
-            enable_password: Enable password
+            enable_password: Enable password (can be str or SecretStr)
 
         Returns:
             Response message from the operation
         """
+        # Handle both str and SecretStr
+        pwd = (
+            enable_password.get_secret_value()
+            if isinstance(enable_password, SecretStr)
+            else enable_password
+        )
+
         current_prompt = self.command("\n")
         if re.search(r">$", current_prompt):
             enable_output = self.command("enable")
             if re.search("Password", enable_output):
-                send_pwd = self.command(enable_password)
+                send_pwd = self.command(pwd)
                 return send_pwd
         elif re.search(r"#$", current_prompt):
             return "Action: None. Already in enable mode."
@@ -200,7 +208,7 @@ class Telnet:
 
         self.device_name = config.device_name
         self.username = config.username
-        self.password = config.password
+        self._password = config.password  # SecretStr
         self.delay = config.delay
         self.port = config.port
 
@@ -227,7 +235,7 @@ class Telnet:
             self.is_nexus = False
             self.access.write(self.username.encode("ascii") + b"\n")
         self.access.read_until(b"Password:", self.delay)
-        self.access.write(self.password.encode("ascii") + b"\n")
+        self.access.write(self._password.get_secret_value().encode("ascii") + b"\n")
         return self.access
 
     def close(self) -> None:
@@ -238,11 +246,11 @@ class Telnet:
     def clear_buffer(self) -> None:
         """Clear the receive buffer (no-op for Telnet)."""
 
-    def set_enable(self, enable_password: str) -> str:
+    def set_enable(self, enable_password: str | SecretStr) -> str:
         """Enter privileged/enable mode.
 
         Args:
-            enable_password: Enable password
+            enable_password: Enable password (can be str or SecretStr)
 
         Returns:
             Response message from the operation
@@ -250,11 +258,18 @@ class Telnet:
         if not self.access:
             return "Error: Not connected"
 
+        # Handle both str and SecretStr
+        pwd = (
+            enable_password.get_secret_value()
+            if isinstance(enable_password, SecretStr)
+            else enable_password
+        )
+
         current_prompt = self.command("\n")
         if re.search(b">$", current_prompt):
             self.access.write(b"enable\n")
             self.access.read_until(b"Password")
-            self.access.write(enable_password.encode("ascii") + b"\n")
+            self.access.write(pwd.encode("ascii") + b"\n")
             return "Entered enable mode"
         elif re.search(b"#$", current_prompt):
             return "Action: None. Already in enable mode."

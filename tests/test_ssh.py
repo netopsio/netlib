@@ -15,7 +15,7 @@ class TestSSHInit:
         ssh = SSH("router1", "admin", "secret")
         assert ssh.device_name == "router1"
         assert ssh.username == "admin"
-        assert ssh.password == "secret"
+        assert ssh._password.get_secret_value() == "secret"
         assert ssh.port == 22
         assert ssh.buffer == 65535
         assert ssh.delay == 1.0
