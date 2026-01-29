@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: System :: Networking",
 ]
 packages = [{include = "netlib"}]
@@ -97,7 +98,7 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 warn_no_return = true
 strict_equality = true
-strict_concatenate = true
+extra_checks = true
 
 [[tool.mypy.overrides]]
 module = [
@@ -112,11 +113,17 @@ disable = [
     "too-few-public-methods",
     "too-many-arguments",
     "too-many-instance-attributes",
+    "too-many-positional-arguments",
     "missing-module-docstring",
     "missing-class-docstring",
     "missing-function-docstring",
     "line-too-long",  # handled by ruff
     "invalid-name",
+    "redefined-builtin",  # __name__ is intentional
+    "broad-exception-caught",  # acceptable for version fallback
+    "deprecated-module",  # telnetlib is deprecated but needed
+    "no-member",  # false positives with Pydantic SecretStr
+    "possibly-used-before-assignment",  # false positive with while loops
 ]
 
 [tool.pytest.ini_options]

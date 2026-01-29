@@ -42,8 +42,10 @@ class TestKeyRingGetCreds:
         # First call returns None (no creds), subsequent calls return passwords
         mock_get_password.side_effect = [
             None,  # First check - no password exists
-            "newuserpass",  # After setting
-            "newenablepass",  # After setting
+            "newuserpass",  # After setting - get_creds called by set_creds
+            "newenablepass",  # After setting - get_creds called by set_creds
+            "newuserpass",  # Final get_creds call by test
+            "newenablepass",  # Final get_creds call by test
         ]
         mock_getpass.side_effect = [
             "newuserpass",  # Enter user password

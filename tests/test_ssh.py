@@ -96,7 +96,7 @@ class TestSSHCommand:
 
         result = ssh.command("show version")
 
-        mock_channel.sendall.assert_called_once_with("show version\n")
+        mock_channel.sendall.assert_called_once_with(b"show version\n")
         assert "Version output" in result
 
 
@@ -163,7 +163,7 @@ class TestSSHDisablePaging:
 
         with patch.object(ssh, "clear_buffer"):
             ssh.disable_paging()
-            mock_channel.sendall.assert_called_once_with("term len 0\n")
+            mock_channel.sendall.assert_called_once_with(b"term len 0\n")
 
     def test_disable_paging_custom_command(self) -> None:
         """Test disable paging with custom command."""
@@ -174,7 +174,7 @@ class TestSSHDisablePaging:
 
         with patch.object(ssh, "clear_buffer"):
             ssh.disable_paging("terminal length 0")
-            mock_channel.sendall.assert_called_once_with("terminal length 0\n")
+            mock_channel.sendall.assert_called_once_with(b"terminal length 0\n")
 
 
 class TestSSHClose:

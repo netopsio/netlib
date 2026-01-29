@@ -39,7 +39,7 @@ class SSH:
         config = SSHConnectionConfig(
             device_name=device_name,
             username=username,
-            password=password,
+            password=SecretStr(password),
             buffer=int(buffer),
             delay=float(delay),
             port=int(port),
@@ -77,7 +77,8 @@ class SSH:
         self.client_conn = self.pre_conn.invoke_shell()
         time.sleep(self.delay)
         if self.client_conn:
-            return self.client_conn.recv(self.buffer)
+            data: bytes = self.client_conn.recv(self.buffer)
+            return data
         return b""
 
     def close(self) -> None:
@@ -92,7 +93,8 @@ class SSH:
             Buffer contents if available, None otherwise
         """
         if self.client_conn and self.client_conn.recv_ready():
-            return self.client_conn.recv(self.buffer).decode("utf-8", "ignore")
+            data: bytes = self.client_conn.recv(self.buffer)
+            return data.decode("utf-8", "ignore")
         return None
 
     def set_enable(self, enable_password: str | SecretStr) -> str:
@@ -129,7 +131,7 @@ class SSH:
             command: Command to disable paging (default: 'term len 0')
         """
         if self.client_conn:
-            self.client_conn.sendall(f"{command}\n")
+            self.client_conn.sendall(f"{command}\n".encode())
             self.clear_buffer()
 
     def command(self, command: str) -> str:
@@ -144,7 +146,7 @@ class SSH:
         if not self.client_conn:
             return ""
 
-        self.client_conn.sendall(f"{command}\n")
+        self.client_conn.sendall(f"{command}\n".encode())
         not_done = True
         output = ""
         while not_done:
@@ -197,7 +199,7 @@ class Telnet:
         config = TelnetConnectionConfig(
             device_name=device_name,
             username=username,
-            password=password,
+            password=SecretStr(password),
             delay=float(delay),
             port=int(port),
         )

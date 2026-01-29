@@ -3,6 +3,7 @@
 import getpass
 
 import keyring
+from pydantic import SecretStr
 
 from netlib.models import CredentialsData
 
@@ -37,8 +38,8 @@ class KeyRing:
         # Validate with Pydantic
         creds = CredentialsData(
             username=self.username,
-            password=str(user_pass or ""),
-            enable=str(enable_pass or ""),
+            password=SecretStr(str(user_pass or "")),
+            enable=SecretStr(str(enable_pass or "")),
         )
 
         return {
@@ -73,8 +74,8 @@ class KeyRing:
         # Validate with Pydantic before storing
         creds = CredentialsData(
             username=self.username,
-            password=user_password,
-            enable=enable_password,
+            password=SecretStr(user_password),
+            enable=SecretStr(enable_password),
         )
 
         # Store in keyring

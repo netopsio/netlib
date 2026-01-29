@@ -16,11 +16,11 @@ except PackageNotFoundError:
             import tomllib
         else:
             try:
-                import tomli as tomllib  # type: ignore[import-not-found,no-redef]
+                import tomli as tomllib  # type: ignore[import-not-found]
             except ImportError:
                 # If tomli not available, use fallback version
                 __version__ = "0.2.0-dev"
-                tomllib = None  # type: ignore[assignment]
+                tomllib = None  # type: ignore[assignment,unused-ignore]
 
         if tomllib is not None:
             pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
